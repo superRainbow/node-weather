@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="">天氣預報</a></li>
+                <li><a href="">觀測</a></li>
+                <li><a href="">防災</a></li>
+            </ul>
+        </nav>
+        <h1>天氣預報</h1>
+    </header>
+    <main>
+        <section>
+            <h2>預報區間：<%= data.modifyedDate %></h2>
+            <ul>
+                <% for(item of data.area){ %>
+                <li>
+                    <h3><%= item.title %></h3>
+                    <ol>
+                        <% for(region of item.region){ %>
+                        <li>
+                            <span><%= region.icon %></span>
+                            <span><%= region.county %></span>
+                            <span><%= region.temperature %></span>
+                            <span><%= region.probability %></span>
+                        </li>
+                        <% } %>
+                    </ol>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+  </body>
+</html>

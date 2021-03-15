@@ -1,0 +1,29 @@
+{
+  "name": "node-weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "lodash": "^4.17.5",
+    "nodemon": "^1.17.1",
+    "path": "^0.12.7",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "scripts": {
+    "start": "node app",
+    "dev": "nodemon app"
+  },
+  "author": "",
+  "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
