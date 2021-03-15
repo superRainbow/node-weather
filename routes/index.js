@@ -1,51 +1,47 @@
-var express = require('express');
-const request = require('request');
+const express = require('express');
 const cheerio = require('cheerio');
+const phantom = require('phantom');
+const router = express.Router();
+const baseURL = 'https://www.cwb.gov.tw';
 
-var router = express.Router();
+let content;
 
 /* 取得天氣 */
-function getWeatherData(){
-    return new Promise((resolve, reject)=>{
-        const weatherURL = {
-            method: 'GET',
-            url: 'https://www.cwb.gov.tw/V7/forecast/f_index.htm?_=1520066649682'
-        };
-        let data = {};
-        request(weatherURL, function (error, response, body) {
-            if (error) reject();
-            var $ = cheerio.load(body);
-            data.modifyedDate = $('.modifyedDate').text();
-            data.area = [];
-            $('div[class$="Area"], .Archipelagoes table').map((index, item) => {
-                let obj = {};
-                obj.title = $(item).find('th').text();
-                obj.region = [];
-                $(item).find('tr').has('td').map((i, m) => {
-                    let region = {};
-                    region.county = $(m).find("td").eq(0).text();
-                    region.temperature = $(m).find("td").eq(1).text();
-                    region.probability = $(m).find("td").eq(2).text();
-                    region.icon = $(m).find("img").attr('title');
-                    obj.region.push(region);
-                });
-                data.area.push(obj);
-            });
-            resolve(data);
-        });
-    }); 
+async function getWeatherData () {
+    const instance = await phantom.create();
+    const page = await instance.createPage();
+    const status = await page.open('https://www.cwb.gov.tw/V8/C/W/OBS_Map.html');
+    content = await page.property('content');
+    await instance.exit();
+};
+
+/* 處理資料 */
+async function handelData(){
+    let data = {};
+    var $ = cheerio.load(content);
+    data.date = $('#preestimate').text();
+    data.area = [];
+    $('#town li').map((index, item) => {
+        let obj = {};
+        obj.title = $(item).find('.city').text();
+        obj.temperature = $(item).find('.tem-C').text() ? $(item).find('.tem-C').text() + '˚C' : '查無資料';
+        obj.icon = baseURL + $(item).find('img').attr('src');
+        data.area.push(obj); 
+    });
+    return data;
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    getWeatherData()
-    .then((data)=>{
-        res.render('index', { title: '天氣預報', data: data });
-    })
-    .catch((error)=>{
-
-    });
+router.get('/', async (req, res) => {
+    await getWeatherData();
+    const data = await handelData();
+    res.render('index', { title: '天氣預報', data: data });
 });
+
+router.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).send('Service Error');
+}); 
 
 
 module.exports = router;

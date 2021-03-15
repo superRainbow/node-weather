@@ -113,24 +113,21 @@ main section ul > li h3 {
 	padding: 10px 20px;
 	border-radius: 5px 5px 0 0;
 }
-main section ul ol li {
-	font-family: PingFangTC-Semibold;
-	color: #424592;
-	margin: 2px 0;
-	background: #d3e7f8;
-	padding: 15px 20px;
+
+.area-content {
 	display: flex;
-	justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+	border-radius: 0 0 5px 5px;
+	background: #f3faff;
 }
-main section span{
-	display: inline-block;
-	width: 50px;
-}
-main section span:first-child{
-	width: 100px;
-}
-main section span+span {
-	margin-left: 10px;
+
+.area-content span {
+	display: block;
+	padding-left: 20px;
+    color: #383e42;
+    font-size: 1.3em;
+    font-weight: 600;
 }
   
 /* 手機 */

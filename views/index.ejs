@@ -18,21 +18,15 @@
     </header>
     <main>
         <section>
-            <h2>預報區間：<%= data.modifyedDate %></h2>
+            <h2>預報區間：<%= data.date %></h2>
             <ul>
                 <% for(item of data.area){ %>
                 <li>
                     <h3><%= item.title %></h3>
-                    <ol>
-                        <% for(region of item.region){ %>
-                        <li>
-                            <span><%= region.icon %></span>
-                            <span><%= region.county %></span>
-                            <span><%= region.temperature %></span>
-                            <span><%= region.probability %></span>
-                        </li>
-                        <% } %>
-                    </ol>
+                    <p class="area-content">
+                        <img src="<%= item.icon %>" alt="">
+                        <span><%= item.temperature %></span>
+                    </p>
                 </li>
                 <% } %>
             </ul>
